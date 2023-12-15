@@ -80,7 +80,8 @@ class Order:
         self.customer = customer
         self.coffee = coffee
         self.price = price
-        Order.all.append(self)
+        # Order.all.append(self):
+        type(self).all.append(self)
 
     # Coffee - price getter/setter
     @property
