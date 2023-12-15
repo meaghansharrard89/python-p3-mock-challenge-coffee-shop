@@ -25,11 +25,13 @@ class Coffee:
 
     # Returns the total number of times a coffee has been ordered. Returns 0 if the coffee has never been ordered:
     def num_orders(self):
-        increment = 1
-        if any(order.coffee == self for order in Order.all):
-            return sum(increment for order in Order.all if order.coffee == self)
-        else:
-            return 0
+        # increment = 1
+        # if any(order.coffee == self for order in Order.all):
+        #     return sum(increment for order in Order.all if order.coffee == self)
+        # else:
+        #     return 0
+
+        return len(self.orders())
 
     # Returns the average price for a coffee based on its orders. Returns 0 if the coffee has never been ordered:
     def average_price(self):
