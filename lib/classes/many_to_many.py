@@ -12,6 +12,8 @@ class Coffee:
     def name(self, name):
         if not hasattr(self, "name") and isinstance(name, str) and len(name) >= 3:
             self._name = name
+        else:
+            raise Exception
 
     # Returns a list of all orders for that coffee. Orders must be of type Order:
     def orders(self):
@@ -52,6 +54,8 @@ class Customer:
     def name(self, name):
         if isinstance(name, str) and 1 <= len(name) <= 15:
             self._name = name
+        else:
+            raise Exception
 
     # Returns a list of all orders for that customer. Orders must be of type Order:
     def orders(self):
@@ -90,6 +94,8 @@ class Order:
             and not hasattr(self, "price")
         ):
             self._price = price
+        else:
+            raise Exception
 
     # Order - customer getter/setter
     @property
