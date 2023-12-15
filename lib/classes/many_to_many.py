@@ -83,12 +83,12 @@ class Order:
         # Order.all.append(self):
         type(self).all.append(self)
 
-    # Coffee - price getter/setter
+    # Order - price getter/setter
     @property
     def price(self):
         return self._price
 
-    # Prices must be of type float. Price must be a number between 1.0 and 10.0, inclusive. Should not be able to change after the order is instantiated:
+    # Prices must be of type float. Price must be a number between 1.0 and 10.0, inclusive. Should *not* be able to change after the order is instantiated:
     @price.setter
     def price(self, price):
         if (
