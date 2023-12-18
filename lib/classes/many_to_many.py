@@ -2,7 +2,7 @@ class Coffee:
     def __init__(self, name):
         self.name = name
 
-    # Coffee - name getter/setter
+    # Coffee - name getter/setter:
     @property
     def name(self):
         return self._name
@@ -10,7 +10,7 @@ class Coffee:
     # Names must be of type str. Names length must be greater or equal to 3 characters. Should *not* be able to change after the coffee is instantiated:
     @name.setter
     def name(self, name):
-        if not hasattr(self, "name") and isinstance(name, str) and len(name) >= 3:
+        if not hasattr(self, "name") and isinstance(name, str) and len(name) > 3:
             self._name = name
         else:
             raise Exception
@@ -25,28 +25,20 @@ class Coffee:
 
     # Returns the total number of times a coffee has been ordered. Returns 0 if the coffee has never been ordered:
     def num_orders(self):
-        # increment = 1
-        # if any(order.coffee == self for order in Order.all):
-        #     return sum(increment for order in Order.all if order.coffee == self)
-        # else:
-        #     return 0
-
         return len(self.orders())
 
     # Returns the average price for a coffee based on its orders. Returns 0 if the coffee has never been ordered:
     def average_price(self):
-        total = [order.price for order in Order.all if order.coffee == self]
-        if not total:
-            return 0
-        else:
-            return sum(total) / len(total)
+        total = [order.price for order in self.orders()]
+        average = sum(total) / len(total)
+        return average
 
 
 class Customer:
     def __init__(self, name):
         self.name = name
 
-    # Customer - name getter/setter
+    # Customer - name getter/setter:
     @property
     def name(self):
         return self._name
@@ -69,8 +61,21 @@ class Customer:
 
     # Receives a coffee object and a price number as arguments. Creates and returns a new Order instance and associates it with that customer and the coffee object provided:
     def create_order(self, coffee, price):
-        new_order = Order(customer=self, coffee=coffee, price=price)
-        return new_order
+        return Order(customer=self, coffee=coffee, price=price)
+
+    # Receives a coffee object argument. Returns the Customer instance that has spent the most money on the coffee instance provided as argument. Returns None if there are no customers for the coffee instance provided:
+    @classmethod
+    def most_aficionado(cls, coffee):
+        all_customers = [order.customer for order in coffee.orders()]
+        if not all_customers:
+            return None
+        most_spent_customer = max(
+            all_customers,
+            key=lambda customer: sum(
+                order.price for order in customer.orders() if order.coffee == coffee
+            ),
+        )
+        return most_spent_customer
 
 
 class Order:
@@ -80,10 +85,9 @@ class Order:
         self.customer = customer
         self.coffee = coffee
         self.price = price
-        # Order.all.append(self):
         type(self).all.append(self)
 
-    # Order - price getter/setter
+    # Order - price getter/setter:
     @property
     def price(self):
         return self._price
@@ -92,15 +96,15 @@ class Order:
     @price.setter
     def price(self, price):
         if (
-            isinstance(price, float)
+            not hasattr(self, "price")
+            and isinstance(price, (float, int))
             and 1.0 <= price <= 10.0
-            and not hasattr(self, "price")
         ):
-            self._price = price
+            self._price = float(price)
         else:
             raise Exception
 
-    # Order - customer getter/setter
+    # Order - customer getter/setter:
     @property
     def customer(self):
         return self._customer
@@ -111,7 +115,7 @@ class Order:
         if isinstance(customer, Customer):
             self._customer = customer
 
-    # Order - coffee getter/setter
+    # Order - coffee getter/setter:
     @property
     def coffee(self):
         return self._coffee
